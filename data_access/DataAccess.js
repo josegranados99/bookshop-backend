@@ -23,7 +23,7 @@ class DataAccess {
   async connect() {
     try {
       await this.client.connect();
-      console.log(`Connected to cluster`);
+      console.log(`Connected to data base: ${this.dbName}`);
     } catch (error) {
       console.log(`Error: ${error}`);
     }

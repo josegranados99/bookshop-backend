@@ -5,7 +5,6 @@ const collection = "user";
 
 (async () => {
   await dataAccess.connect();
-  console.log("Connected to the database");
 })();
 
 const getUsers = async () => {
