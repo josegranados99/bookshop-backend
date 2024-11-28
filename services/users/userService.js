@@ -3,9 +3,9 @@ import DataAccess from "../../data_access/DataAccess.js";
 const dataAccess = new DataAccess();
 const collection = "user";
 
-(async () => {
-  await dataAccess.connect();
-})();
+// (async () => {
+//   await dataAccess.connect();
+// })();
 
 const getUsers = async () => {
   const data = await dataAccess.findAll(collection);
