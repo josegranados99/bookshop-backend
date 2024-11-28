@@ -30,4 +30,18 @@ const deleteUser = async (req, res) => {
   res.json(data);
 };
 
-export default { getUsers, getUserById, createUser, updateUser, deleteUser };
+const loginUser = async (req, res) => {
+  const body = req.body;
+  const { status, data } = await userService.loginUser(body);
+  res
+    .status(status)
+    .cookie("access_token", data.token, {
+      httpOnly: false,
+      secure: false,
+      sameSize: "none",
+      maxAge: 24 * 60 * 60 * 1000,
+    })
+    .send({ message: data.message });
+};
+
+export default { getUsers, getUserById, createUser, updateUser, deleteUser, loginUser };

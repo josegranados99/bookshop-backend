@@ -7,6 +7,8 @@ userRouter
   .get("/", userController.getUsers)
   .get("/:id", userController.getUserById)
   .post("/", userController.createUser)
+  .post("/login", userController.loginUser)
+  // .post("/logout", userController.createUser)
   .put("/:id", userController.updateUser)
   .delete("/:id", userController.deleteUser);
 

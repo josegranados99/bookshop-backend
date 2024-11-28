@@ -3,10 +3,6 @@ import DataAccess from "../../data_access/DataAccess.js";
 const dataAccess = new DataAccess();
 const collection = "author";
 
-// (async () => {
-//   await dataAccess.connect();
-// })();
-
 const getAuthors = async () => {
   const data = await dataAccess.findAll(collection);
   return data;

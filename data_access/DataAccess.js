@@ -23,41 +23,47 @@ class DataAccess {
   async connect() {
     try {
       await this.client.connect();
-      console.log(`Connected to data base: ${this.dbName}`);
+      console.log(`Connected to data base ${this.dbName}`);
     } catch (error) {
       console.log(`Error: ${error}`);
     }
   }
 
-  async findAll(colectionName) {
-    const collection = this.db.collection(colectionName);
+  async findAll(collectionName) {
+    const collection = this.db.collection(collectionName);
     const data = await collection.find().toArray();
     return data;
   }
 
-  async findById(colectionName, id) {
-    const collection = this.db.collection(colectionName);
+  async findById(collectionName, id) {
+    const collection = this.db.collection(collectionName);
     const data = await collection.findOne({_id: new ObjectId(id)})
     return data;
   }
 
-  async save(colectionName, body) {
-    const collection = this.db.collection(colectionName);
+  async save(collectionName, body) {
+    const collection = this.db.collection(collectionName);
     const query = await collection.insertOne(body);
     return query;
   }
 
-  async update(colectionName, body, id) {
-    const collection = this.db.collection(colectionName);
+  async update(collectionName, body, id) {
+    const collection = this.db.collection(collectionName);
     const query = await collection.updateOne({ _id: new ObjectId(id) }, { $set: body });
 
     return query;
   }
 
-  async delete(colectionName,id) {
-    const collection = this.db.collection(colectionName);
+  async delete(collectionName,id) {
+    const collection = this.db.collection(collectionName);
     const query = await collection.deleteOne({_id: new ObjectId(id)});
 
+    return query;
+  }
+
+  async findByField(collectionName, field, value) {
+    const collection = this.db.collection(collectionName);
+    const query = await collection.findOne({[field]: value});
     return query;
   }
 }
