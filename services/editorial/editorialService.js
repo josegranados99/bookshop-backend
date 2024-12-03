@@ -1,33 +1,41 @@
-import dotenv from "dotenv";
-import DataAccess from "../../data_access/DataAccess.js";
+import { PrismaClient } from "@prisma/client";
 
-dotenv.config();
-const dataAccess = new DataAccess();
-const collection = "editorial";
+const prisma = new PrismaClient();
 
 const getEditorials = async () => {
-  const data = await dataAccess.findAll(collection);
+  const data = await prisma.editorial.findMany({
+    orderBy: { id: "asc" },
+  });
   return data;
 };
 
 const getEditorialById = async (id) => {
-  const data = await dataAccess.findById(collection, id);
+  const data = await prisma.editorial.findUnique({
+    where: { id: parseInt(id) },
+  });
   return data;
 };
 
 const createEditorial = async (body) => {
-  const data = await dataAccess.save(collection, body);
+  const data = await prisma.editorial.create({
+    data: body,
+  });
   return data;
 };
 
 const updateEditorial = async (body, id) => {
-  const data = await dataAccess.update(collection, body, id);
+  const data = await prisma.editorial.update({
+    where: { id: parseInt(id) },
+    data: body,
+  });
   return data;
 };
 
 const deleteEditorial = async (id) => {
-  const deletedEditorial = await dataAccess.delete(collection, id);
+  const deletedEditorial = await prisma.editorial.delete({
+    where: { id: parseInt(id) },
+  });
   return deletedEditorial;
-}
+};
 
 export default { getEditorials, getEditorialById, createEditorial, updateEditorial, deleteEditorial };

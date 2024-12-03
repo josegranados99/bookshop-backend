@@ -3,7 +3,6 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import userRouter from "./routes/v1/users/userRoute.js";
 import bookRouter from "./routes/v1/books/bookRoute.js";
-import connectionToDB from "./data_access/connection.js";
 import authorRouter from "./routes/v1/author/authorRoute.js";
 import editorialRouter from "./routes/v1/editorial/editorialRoute.js";
 
@@ -31,5 +30,4 @@ app.use((req, res) => {
 
 app.listen(PORT_BACKEND, () => {
   console.log(`Server listening on port ${PORT_BACKEND}`);
-  connectionToDB();
 });

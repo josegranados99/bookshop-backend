@@ -1,21 +1,34 @@
+import { PrismaClient } from "@prisma/client";
 import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
-import DataAccess from "../../data_access/DataAccess.js";
 import { comparePassword, hashPassword } from "../../helpers/functions/functions.js";
 import { HTTP_CODE_OK, HTTP_CODE_BAD_REQUEST } from "../../helpers/constants/constants.js";
 
 dotenv.config();
-const dataAccess = new DataAccess();
-const collection = "user";
+const prisma = new PrismaClient();
 const SECRET_KEY = process.env.SECRET_KEY;
 
 const getUsers = async () => {
-  const data = await dataAccess.findAll(collection);
-  return data;
+  const users = await prisma.user.findMany({
+    orderBy: { id: "asc" },
+    select: {
+      id: true,
+      email: true,
+    },
+  });
+
+  return users;
 };
 
 const getUserById = async (id) => {
-  const user = await dataAccess.findById(collection, id);
+  const user = await prisma.user.findUnique({
+    where: { id: parseInt(id) },
+    select: {
+      id: true,
+      email: true,
+    },
+  });
+
   return user;
 };
 
@@ -24,24 +37,42 @@ const createUser = async (body) => {
     ...body,
     password: await hashPassword(body.password),
   };
-  const user = await dataAccess.save(collection, data);
+  const user = await prisma.user.create({
+    data,
+  });
+
+  delete user.password;
+
   return user;
 };
 
 const updateUser = async (body, id) => {
-  const updatedUser = await dataAccess.update(collection, body, id);
+  const updatedUser = await prisma.user.update({
+    where: { id: parseInt(id) },
+    data: body,
+    select: {
+      id: true,
+      email: true,
+    },
+  });
   return updatedUser;
 };
 
 const deleteUser = async (id) => {
-  const deletedUser = await dataAccess.delete(collection, id);
+  const deletedUser = await prisma.user.delete({
+    where: { id: parseInt(id) },
+    select: { id: true },
+  });
   return deletedUser;
 };
 
 const loginUser = async (body) => {
   let response = "";
   const { email, password } = body;
-  const data = await dataAccess.findByField(collection, "email", email);
+  // const data = await dataAccess.findByField(collection, "email", email);
+  const data = await prisma.user.findUnique({
+    where: { email },
+  });
 
   if (!data) {
     response = {
