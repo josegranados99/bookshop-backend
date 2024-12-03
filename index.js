@@ -5,6 +5,7 @@ import userRouter from "./routes/v1/users/userRoute.js";
 import bookRouter from "./routes/v1/books/bookRoute.js";
 import connectionToDB from "./data_access/connection.js";
 import authorRouter from "./routes/v1/author/authorRoute.js";
+import editorialRouter from "./routes/v1/editorial/editorialRoute.js";
 
 dotenv.config();
 
@@ -18,7 +19,7 @@ app.use(json());
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/book", bookRouter);
 app.use("/api/v1/author", authorRouter);
-// app.use("/api/v1/editorial", EditorialRouter);
+app.use("/api/v1/editorial", editorialRouter);
 
 app.use((req, res) => {
   res.status(404).json({
